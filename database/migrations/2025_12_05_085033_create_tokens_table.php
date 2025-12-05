@@ -30,7 +30,7 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             $table->foreign('token_type_id')
-                ->references('id')->on('tokens_types')
+                ->references('id')->on('token_types')
                 ->onDelete('restrict');
         });
     }
