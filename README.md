@@ -37,11 +37,12 @@ import:data
 ## БД доступы:
 ```
 DB_CONNECTION=mysql
-DB_HOST=141.8.192.182
-DB_PORT=3306
-DB_DATABASE=f1198795_test
-DB_USERNAME=f1198795_test
-DB_PASSWORD="f1198795_test"
+DB_HOST=data-base
+DB_PORT=33061
+DB_DATABASE=db
+DB_USERNAME=odin
+DB_PASSWORD=odin
+DB_ROOT_PASSWORD=iGdrAssil*&^
 
 SESSION_DRIVER=database
 SESSION_LIFETIME=120
@@ -50,4 +51,23 @@ SESSION_PATH=/
 SESSION_DOMAIN=null
 
 CACHE_DRIVER=file
+```
+
+## Развертывание риложения
+
+Для развертывания приложения прежде воспользуйтесь командой:
+```
+php artisan make:docker
+```
+Данная команда сгенерирует docker-compose.yml и Dockerfile. 
+Все пароли берутся из вашего .env файла. Пример паролей указан выше.
+
+После генерации файлов воспользуйтесь командой:
+```
+docker-compose up -d
+```
+Перед запуском docker-compose up -d убедитесь, что старые контейнеры удалены, чтобы избежать ошибок сборки!
+Чтобы удалить старые контейнеры воспользуйтесь командой:
+```
+docker-compose down --rmi all --volumes --remove-orphans
 ```
