@@ -35,6 +35,7 @@ services:
       - mysql
     ports:
       - "19000:9000"
+    entrypoint: ["/var/www/docker/docker-entrypoint.sh"]
 
   web:
     image: nginx:latest
