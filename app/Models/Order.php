@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +27,7 @@ class Order extends Model
         'brand',
         'is_cancel',
         'cancel_dt',
+        'account_id'
     ];
 
     protected $casts = [

@@ -15,9 +15,9 @@ return new class extends Migration
             if (DB::getDriverName() !== 'sqlite') {
                 $table->unique(['account_id', 'date'], 'incomes_account_date_unique');
                 $table->foreign('account_id')
-                      ->references('id')
-                      ->on('accounts')
-                      ->onDelete('cascade');
+                    ->references('id')
+                    ->on('accounts')
+                    ->onDelete('cascade');
             }
         });
     }

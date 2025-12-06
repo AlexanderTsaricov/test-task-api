@@ -34,5 +34,6 @@ class Sale extends Model
         'category',
         'brand',
         'is_storno',
+        'account_id'
     ];
 }
