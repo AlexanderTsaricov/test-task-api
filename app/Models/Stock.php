@@ -28,6 +28,7 @@ class Stock extends Model
         'sc_code',
         'price',
         'discount',
+        'account_id'
     ];
 
     protected $casts = [
