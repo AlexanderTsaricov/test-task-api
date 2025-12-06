@@ -15,7 +15,7 @@ use Carbon\Carbon;
 
 class ImportApiData extends Command
 {
-    protected $signature = 'import:data {company} {account} {tokenType}';
+    protected $signature = 'import:data {company} {account} {tokenType} {--onlyActual}';
     protected $description = 'Импорт данных из API (company, account, tokenType)';
 
     /**
@@ -26,6 +26,8 @@ class ImportApiData extends Command
         $company = Company::find((int)$this->argument('company'));
         $account = Account::find((int)$this->argument('account'));
         $tokenType = TokenType::find((int)$this->argument('tokenType'));
+
+        $onlyActual = $this->option('onlyActual');
         $limit = 100;
 
 
@@ -90,27 +92,32 @@ class ImportApiData extends Command
                 ? Carbon::now()->format('Y-m-d H:i:s')
                 : Carbon::now()->format('Y-m-d');
 
-            if ($last) {
-                if ($type === 'incomes') {
-                    // Для incomes — следующая секунда после последней записи
-                    $dateFrom = Carbon::parse($last->created_at)
-                        ->addSecond()
-                        ->format('Y-m-d H:i:s');
+            if ($onlyActual) {
+                $dateFrom = Carbon::today()->startOfDay()->format('Y-m-d H:i:s');
+                $dateTo = Carbon::now()->format('Y-m-d H:i:s');
+                if ($last) {
+                    if ($type === 'incomes') {
+                        // Для incomes — следующая секунда после последней записи
+                        $dateFrom = Carbon::parse($last->created_at)
+                            ->addSecond()
+                            ->format('Y-m-d H:i:s');
+                    } else {
+                        // Для остальных — начало следующего дня (00:00:01)
+                        $dateFrom = Carbon::parse($last->created_at)
+                            ->addDay()
+                            ->startOfDay()
+                            ->addSecond()
+                            ->format('Y-m-d H:i:s');
+                    }
                 } else {
-                    // Для остальных — начало следующего дня (00:00:01)
-                    $dateFrom = Carbon::parse($last->created_at)
-                        ->addDay()
-                        ->startOfDay()
-                        ->addSecond()
+                    // Если записей нет — берём месяц назад
+                    $dateFrom = Carbon::now()
+                        ->subMonth()
                         ->format('Y-m-d H:i:s');
                 }
-            } else {
-                // Если записей нет — берём месяц назад
-                $dateFrom = Carbon::now()
-                    ->subMonth()
-                    ->format('Y-m-d H:i:s');
             }
 
+            $this->info("Будут импортированы данные от: " . $dateFrom . " до: " . $dateTo);
 
             do {
                 switch ($type) {
