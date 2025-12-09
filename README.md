@@ -75,5 +75,5 @@ docker-compose down --rmi all --volumes --remove-orphans
 ## Запуск расписания автообновления
 Для запуска расписания автообновления добавьте в системный cron:
 ```
-* * * * * docker exec app-php php artisan schedule:run >> /var/www/project/storage/logs/scheduler.log 2>&1
+* * * * * docker compose exec app php artisan schedule:run >> /var/www/project/storage/logs/scheduler.log 2>&1
 ```
