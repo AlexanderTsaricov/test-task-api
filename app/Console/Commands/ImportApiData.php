@@ -92,7 +92,7 @@ class ImportApiData extends Command
                 ? Carbon::now()->format('Y-m-d H:i:s')
                 : Carbon::now()->format('Y-m-d');
 
-            if ($onlyActual) {
+            if (!$onlyActual) {
                 $dateFrom = Carbon::today()->startOfDay()->format('Y-m-d H:i:s');
                 $dateTo = Carbon::now()->format('Y-m-d H:i:s');
                 if ($last) {
@@ -115,6 +115,9 @@ class ImportApiData extends Command
                         ->subMonth()
                         ->format('Y-m-d H:i:s');
                 }
+            } else {
+                $dateFrom = Carbon::today()->startOfDay()->format('Y-m-d H:i:s');
+                $dateTo   = Carbon::now()->format('Y-m-d H:i:s');
             }
 
             $this->info("Будут импортированы данные от: " . $dateFrom . " до: " . $dateTo);
